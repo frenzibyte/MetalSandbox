@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net6.0-maccatalyst</TargetFramework>
+        <RuntimeIdentifiers>maccatalyst-arm64</RuntimeIdentifiers> 
+        <OutputType>Exe</OutputType>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>true</ImplicitUsings>
+        <SupportedOSPlatformVersion>14.2</SupportedOSPlatformVersion>
+        <ApplicationId>sh.ppy.MacCatalystApplication</ApplicationId>
+    </PropertyGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\VeldridSandbox\VeldridSandbox.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <NativeReference Include="$(MSBuildThisFileDirectory)veldrid-spirv.xcframework" Kind="Framework" SmartLink="false" ForceLoad="true" />
+        <NativeReference Include="$(MSBuildThisFileDirectory)metal-mono-workaround.xcframework" Kind="Framework" SmartLink="false" ForceLoad="true" />
+    </ItemGroup>
+    <!-- Veldrid references libraries which cannot be AOT'd on iOS, replace them with stub assemblies.
+         See: https://github.com/mellinoe/veldrid/issues/472#issuecomment-1356461410 -->
+    <Target Name="OsuFrameworkIOSCopyStubAssemblies" BeforeTargets="_AOTCompile">
+        <ItemGroup>
+            <StubFiles Include="$(MSBuildThisFileDirectory)stubs\*"/>
+        </ItemGroup>
+        <Copy SourceFiles="@(StubFiles)" DestinationFolder="obj\$(Configuration)\$(TargetFramework)\$(RuntimeIdentifier)\linked\"/>
+    </Target>
+</Project>
