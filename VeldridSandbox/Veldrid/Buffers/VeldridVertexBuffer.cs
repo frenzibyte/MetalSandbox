@@ -19,8 +19,8 @@ namespace VeldridSandbox.Veldrid.Buffers
 
         private readonly VeldridRenderer renderer;
 
-        private ManagedStagingBuffer<T>? stagingBuffer;
         private DeviceBuffer? gpuBuffer;
+        private MappedResource? gpuResource;
 
         private int lastWrittenVertexIndex = -1;
 
@@ -37,7 +37,7 @@ namespace VeldridSandbox.Veldrid.Buffers
         /// <param name="vertexIndex">The index of the vertex.</param>
         /// <param name="vertex">The vertex.</param>
         /// <returns>Whether the vertex changed.</returns>
-        public bool SetVertex(int vertexIndex, T vertex)
+        public unsafe bool SetVertex(int vertexIndex, T vertex)
         {
             ref var currentVertex = ref getMemory()[vertexIndex];
 
@@ -60,14 +60,8 @@ namespace VeldridSandbox.Veldrid.Buffers
         /// </summary>
         public virtual void Initialise()
         {
-            getMemory();
-            Debug.Assert(stagingBuffer != null);
-
-            gpuBuffer = renderer.Factory.CreateBuffer(new BufferDescription((uint)(Size * STRIDE), BufferUsage.VertexBuffer | stagingBuffer.CopyTargetUsageFlags));
-        }
-
-        ~VeldridVertexBuffer()
-        {
+            gpuBuffer = renderer.Factory.CreateBuffer(new BufferDescription((uint)(Size * STRIDE), BufferUsage.VertexBuffer | BufferUsage.Dynamic));
+            gpuResource = renderer.Device.Map(gpuBuffer, MapMode.Write);
         }
 
         public void Dispose()
@@ -121,23 +115,15 @@ namespace VeldridSandbox.Veldrid.Buffers
 
         internal void UpdateRange(int startIndex, int endIndex)
         {
-            if (gpuBuffer == null)
-                Initialise();
-
-            Debug.Assert(stagingBuffer != null);
-            Debug.Assert(gpuBuffer != null);
-
-            int countVertices = endIndex - startIndex;
-            stagingBuffer.CopyTo(gpuBuffer, (uint)startIndex, (uint)startIndex, (uint)countVertices);
         }
 
-        private Span<T> getMemory()
+        private unsafe T* getMemory()
         {
             if (!InUse)
-                stagingBuffer = new ManagedStagingBuffer<T>(renderer, (uint)Size);
+                Initialise();
 
             LastUseFrameIndex = 1;
-            return stagingBuffer!.Data;
+            return (T*)gpuResource!.Value.Data;
         }
 
         public ulong LastUseFrameIndex { get; private set; }
@@ -146,8 +132,7 @@ namespace VeldridSandbox.Veldrid.Buffers
 
         public void Free()
         {
-            stagingBuffer?.Dispose();
-            stagingBuffer = null;
+            renderer.Device.Unmap(gpuBuffer);
 
             gpuBuffer?.Dispose();
             gpuBuffer = null;
