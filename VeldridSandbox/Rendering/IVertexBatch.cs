@@ -3,7 +3,7 @@
 
 using System;
 
-namespace osu.Framework.Graphics.Rendering
+namespace VeldridSandbox.Rendering
 {
     public interface IVertexBatch : IDisposable
     {

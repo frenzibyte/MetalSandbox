@@ -2,10 +2,9 @@
 // See the LICENCE file in the repository root for full licence text.
 
 using System;
-using osu.Framework.Graphics.Veldrid.Buffers;
-using VeldridSandbox;
+using VeldridSandbox.Veldrid.Buffers;
 
-namespace osu.Framework.Graphics.Veldrid.Batches
+namespace VeldridSandbox.Veldrid.Batches
 {
     internal class VeldridQuadBatch<T> : VeldridVertexBatch<T>
         where T : unmanaged, IEquatable<T>

@@ -4,7 +4,7 @@
 using System;
 using Veldrid;
 
-namespace osu.Framework.Graphics.Veldrid.Buffers.Staging
+namespace VeldridSandbox.Veldrid.Buffers.Staging
 {
     internal interface IStagingBuffer<T> : IDisposable
         where T : unmanaged

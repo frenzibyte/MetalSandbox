@@ -6,9 +6,8 @@ using System.Buffers;
 using System.Runtime.CompilerServices;
 using SixLabors.ImageSharp.Memory;
 using Veldrid;
-using VeldridSandbox;
 
-namespace osu.Framework.Graphics.Veldrid.Buffers.Staging
+namespace VeldridSandbox.Veldrid.Buffers.Staging
 {
     /// <summary>
     /// A staging buffer that uses a buffer in managed memory as its storage medium.

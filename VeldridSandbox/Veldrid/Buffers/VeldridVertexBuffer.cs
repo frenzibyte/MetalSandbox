@@ -4,14 +4,13 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using osu.Framework.Graphics.Rendering;
-using osu.Framework.Graphics.Veldrid.Buffers.Staging;
 using Veldrid;
-using VeldridSandbox;
+using VeldridSandbox.Rendering;
+using VeldridSandbox.Veldrid.Buffers.Staging;
 using BufferUsage = Veldrid.BufferUsage;
 using PrimitiveTopology = Veldrid.PrimitiveTopology;
 
-namespace osu.Framework.Graphics.Veldrid.Buffers
+namespace VeldridSandbox.Veldrid.Buffers
 {
     internal abstract class VeldridVertexBuffer<T> : IVertexBuffer
         where T : unmanaged, IEquatable<T>

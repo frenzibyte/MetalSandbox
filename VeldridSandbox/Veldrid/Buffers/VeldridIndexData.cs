@@ -2,9 +2,8 @@
 // See the LICENCE file in the repository root for full licence text.
 
 using Veldrid;
-using VeldridSandbox;
 
-namespace osu.Framework.Graphics.Veldrid.Buffers
+namespace VeldridSandbox.Veldrid.Buffers
 {
     // todo: this feels too janky
     public class VeldridIndexData

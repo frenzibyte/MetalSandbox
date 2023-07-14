@@ -3,12 +3,10 @@
 
 using System;
 using System.Collections.Generic;
-using osu.Framework.Graphics.Rendering;
-using osu.Framework.Graphics.Veldrid.Buffers;
-using VeldridSandbox;
-using Vortice.DXGI;
+using VeldridSandbox.Rendering;
+using VeldridSandbox.Veldrid.Buffers;
 
-namespace osu.Framework.Graphics.Veldrid.Batches
+namespace VeldridSandbox.Veldrid.Batches
 {
     internal abstract class VeldridVertexBatch<T> : IVertexBatch<T>
         where T : unmanaged, IEquatable<T>

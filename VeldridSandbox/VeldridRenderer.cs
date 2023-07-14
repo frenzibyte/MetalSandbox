@@ -1,11 +1,11 @@
 using System;
 using System.Numerics;
 using System.Text;
-using osu.Framework.Graphics.Rendering;
-using osu.Framework.Graphics.Veldrid.Batches;
-using osu.Framework.Graphics.Veldrid.Buffers;
 using Veldrid;
 using Veldrid.SPIRV;
+using VeldridSandbox.Rendering;
+using VeldridSandbox.Veldrid.Batches;
+using VeldridSandbox.Veldrid.Buffers;
 
 namespace VeldridSandbox
 {

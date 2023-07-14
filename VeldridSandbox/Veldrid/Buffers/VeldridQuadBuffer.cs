@@ -3,12 +3,10 @@
 
 using System;
 using System.Diagnostics;
-using osu.Framework.Graphics.Rendering;
 using Veldrid;
-using VeldridSandbox;
 using PrimitiveTopology = Veldrid.PrimitiveTopology;
 
-namespace osu.Framework.Graphics.Veldrid.Buffers
+namespace VeldridSandbox.Veldrid.Buffers
 {
     internal class VeldridQuadBuffer<T> : VeldridVertexBuffer<T>
         where T : unmanaged, IEquatable<T>
