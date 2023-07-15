@@ -23,6 +23,7 @@ namespace VeldridSandbox
 
         public VeldridIndexData SharedQuadIndex { get; set; }
         private VeldridQuadBatch<Vector2> batch;
+        private VeldridQuadBuffer<Vector2> buffer;
 
         private GraphicsDevice device = null!;
         private CommandList commands = null!;
@@ -71,7 +72,7 @@ namespace VeldridSandbox
             });
 
             batch = new VeldridQuadBatch<Vector2>(this, instances);
-            new VeldridQuadBuffer<Vector2>(this, instances).Initialise();
+            buffer = new VeldridQuadBuffer<Vector2>(this, instances);
         }
 
         public unsafe void Render()
@@ -119,10 +120,15 @@ namespace VeldridSandbox
                 batch.Add(bottomRight);
                 batch.Add(topRight);
                 batch.Add(topLeft);
+                // buffer.SetVertex(index + 0, bottomLeft);
+                // buffer.SetVertex(index + 1, bottomRight);
+                // buffer.SetVertex(index + 2, topRight);
+                // buffer.SetVertex(index + 3, topLeft);
             }
 
             // commands.DrawIndexed(instances * 6, 1, 0, 0, 0);
             batch.Draw();
+            // buffer.DrawRange(0, instances * 4);
             // for (int i = 0; i < 1; i++)
             //     commands.Draw((instances * 6) / 1, 1, (uint)(((instances * 6) / 1) * i), 0);
 

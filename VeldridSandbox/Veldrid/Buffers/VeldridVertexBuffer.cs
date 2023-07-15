@@ -31,6 +31,8 @@ namespace VeldridSandbox.Veldrid.Buffers
             Size = amountVertices;
         }
 
+        private unsafe T* memory;
+
         /// <summary>
         /// Sets the vertex at a specific index of this <see cref="VeldridVertexBuffer{T}"/>.
         /// </summary>
@@ -39,7 +41,10 @@ namespace VeldridSandbox.Veldrid.Buffers
         /// <returns>Whether the vertex changed.</returns>
         public unsafe bool SetVertex(int vertexIndex, T vertex)
         {
-            ref var currentVertex = ref getMemory()[vertexIndex];
+            if (gpuBuffer == null)
+                Initialise();
+
+            ref var currentVertex = ref memory[vertexIndex];
             currentVertex = vertex;
             return false;
         }
@@ -52,10 +57,11 @@ namespace VeldridSandbox.Veldrid.Buffers
         /// <summary>
         /// Initialises this <see cref="VeldridVertexBuffer{T}"/>. Guaranteed to be run on the draw thread.
         /// </summary>
-        public virtual void Initialise()
+        public virtual unsafe void Initialise()
         {
             gpuBuffer = renderer.Factory.CreateBuffer(new BufferDescription((uint)(Size * STRIDE), BufferUsage.VertexBuffer | BufferUsage.Dynamic));
             gpuResource = renderer.Device.Map(gpuBuffer, MapMode.Write);
+            memory = (T*)gpuResource.Value.Data;
         }
 
         public void Dispose()
@@ -109,15 +115,6 @@ namespace VeldridSandbox.Veldrid.Buffers
 
         internal void UpdateRange(int startIndex, int endIndex)
         {
-        }
-
-        private unsafe T* getMemory()
-        {
-            if (!InUse)
-                Initialise();
-
-            LastUseFrameIndex = 1;
-            return (T*)gpuResource!.Value.Data;
         }
 
         public ulong LastUseFrameIndex { get; private set; }
