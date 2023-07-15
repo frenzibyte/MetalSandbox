@@ -40,14 +40,8 @@ namespace VeldridSandbox.Veldrid.Buffers
         public unsafe bool SetVertex(int vertexIndex, T vertex)
         {
             ref var currentVertex = ref getMemory()[vertexIndex];
-
-            bool isNewVertex = vertexIndex > lastWrittenVertexIndex
-                               || !currentVertex.Equals(vertex);
-
             currentVertex = vertex;
-            lastWrittenVertexIndex = Math.Max(lastWrittenVertexIndex, vertexIndex);
-
-            return isNewVertex;
+            return false;
         }
 
         /// <summary>
